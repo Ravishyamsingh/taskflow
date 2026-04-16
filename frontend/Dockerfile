@@ -7,26 +7,17 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-# ─── Production Stage (nginx) ─────────────────────────────────
-FROM nginx:alpine AS production
+# ─── Production Stage (node) ──────────────────────────────────
+FROM node:20-alpine AS production
 
-# Copy built React app
-COPY --from=builder /app/build /usr/share/nginx/html
+WORKDIR /app
 
-# Nginx config for React Router (SPA)
-RUN echo 'server { \
-  listen 80; \
-  root /usr/share/nginx/html; \
-  index index.html; \
-  location / { \
-    try_files $uri $uri/ /index.html; \
-  } \
-  location /static/ { \
-    expires 1y; \
-    add_header Cache-Control "public, immutable"; \
-  } \
-}' > /etc/nginx/conf.d/default.conf
+COPY --from=builder /app/package*.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/build ./build
 
-EXPOSE 80
+ENV NODE_ENV=production
 
-CMD ["nginx", "-g", "daemon off;"]
+EXPOSE 3000
+
+CMD ["npm", "run", "start:railway"]
