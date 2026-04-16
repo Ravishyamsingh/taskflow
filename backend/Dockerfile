@@ -19,6 +19,7 @@ WORKDIR /app
 COPY --from=builder --chown=nodeapp:nodejs /app/node_modules ./node_modules
 COPY --from=builder --chown=nodeapp:nodejs /app/prisma ./prisma
 COPY --chown=nodeapp:nodejs . .
+RUN chmod +x /app/start.sh
 
 # Create logs directory
 RUN mkdir -p logs && chown nodeapp:nodejs logs
@@ -28,4 +29,4 @@ USER nodeapp
 EXPOSE 5000
 
 # Run migrations then start
-CMD ["sh", "-c", "npx prisma migrate deploy && node server.js"]
+CMD ["./start.sh"]
