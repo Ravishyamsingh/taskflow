@@ -2,14 +2,17 @@
 FROM node:20-alpine AS builder
 
 WORKDIR /app
+RUN apk add --no-cache openssl
 COPY package*.json ./
-RUN npm ci --only=production
+COPY prisma ./prisma
+RUN npm ci --omit=dev
 COPY . .
 RUN npx prisma generate
 
 # ─── Production Stage ─────────────────────────────────────────
 FROM node:20-alpine AS production
 
+RUN apk add --no-cache openssl
 RUN addgroup -g 1001 -S nodejs && adduser -S nodeapp -u 1001
 WORKDIR /app
 
