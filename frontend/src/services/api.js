@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const DEFAULT_PROD_API_URL = "https://intelligent-acceptance-production.up.railway.app/api/v1";
+
 const API_URL = (process.env.REACT_APP_API_URL ||
-  (process.env.NODE_ENV === "development" ? "http://localhost:5000/api/v1" : "/api/v1"))
+  (process.env.NODE_ENV === "development" ? "http://localhost:5000/api/v1" : DEFAULT_PROD_API_URL))
   .replace(/\/+$/, "");
 
 const api = axios.create({
