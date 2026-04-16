@@ -47,6 +47,40 @@ npm start
 
 Frontend: http://localhost:3000
 
+## Deploy on Railway
+
+Railway is a good option for this project. It is simple to host backend, frontend, and PostgreSQL in one place.
+
+### 1) Create Services
+- Add a PostgreSQL service in Railway.
+- Add a Backend service from this repo with root directory: `backend`.
+- Add a Frontend service from this repo with root directory: `frontend`.
+
+### 2) Backend Settings (Railway)
+- Start Command: `npm run start:railway`
+- Required variables:
+	- `DATABASE_URL` (from Railway PostgreSQL service)
+	- `JWT_SECRET` (your strong secret)
+	- `NODE_ENV=production`
+	- `FRONTEND_URL=https://<your-frontend-domain>.railway.app`
+
+Note: `start:railway` runs `prisma migrate deploy` automatically before starting the API.
+
+### 3) Frontend Settings (Railway)
+- Build Command: `npm run build`
+- Start Command: `npm run start:railway`
+- Required variable:
+	- `REACT_APP_API_URL=https://<your-backend-domain>.railway.app/api/v1`
+
+After first backend deploy, copy its public domain and set it in frontend `REACT_APP_API_URL`.
+
+### 4) Optional Seed (One Time)
+Run this from backend service shell after deployment:
+
+```bash
+npm run db:seed
+```
+
 ## API Overview
 
 ### Auth
