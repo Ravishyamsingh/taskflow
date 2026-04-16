@@ -7,5 +7,8 @@ until npx prisma migrate deploy; do
   sleep 5
 done
 
+echo "Ensuring demo seed data..."
+node src/utils/seed.js
+
 echo "Starting API server..."
 exec node server.js
