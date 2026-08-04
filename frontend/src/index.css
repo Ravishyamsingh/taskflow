@@ -21,6 +21,8 @@
   --font-head: 'Montserrat', sans-serif;
   --font-body: 'Open Sans', sans-serif;
   --font-mono: 'Open Sans', sans-serif;
+
+  
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
